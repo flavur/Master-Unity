@@ -1,47 +1,49 @@
-# Windows image file caches
+# System files
 Thumbs.db
-ehthumbs.db
+Thumbs.db.meta
+*.DS_Store
+*.directory
+.vs
+.vscode
 
-# Folder config file
-Desktop.ini
+# Build files
+*.apk
+*.obb
 
-# Recycle Bin used on file shares
-$RECYCLE.BIN/
+# Lightmaps
+*.exr
+*.exr.meta
+LightmapSnapshot.asset
+LightmapSnapshot.asset.meta
+LightingData.asset
+LightingData.asset.meta
 
-# Windows Installer files
-*.cab
-*.msi
-*.msm
-*.msp
+# Visual Studio files
+*.cachefile
+*.csproj
+*.pidb
+*.sln
+*.suo
+*.unityproj
+*.user
+*.userprefs
+*.v11
+*.v12
 
-# Windows shortcuts
-*.lnk
+# Folder to exclude
+[Bb]in
+[Dd]ebug*/
+[Rr]elease*/
+Builds/
+ipch/
+Library/
+obj/
+Temp/
+UWP/
+WindowsStore/
+WS/
+UnityVS/
+UnityVS.meta
 
-# =========================
-# Operating System Files
-# =========================
-
-# OSX
-# =========================
-
-.DS_Store
-.AppleDouble
-.LSOverride
-
-# Thumbnails
-._*
-
-# Files that might appear in the root of a volume
-.DocumentRevisions-V100
-.fseventsd
-.Spotlight-V100
-.TemporaryItems
-.Trashes
-.VolumeIcon.icns
-
-# Directories potentially created on remote AFP share
-.AppleDB
-.AppleDesktop
-Network Trash Folder
-Temporary Items
-.apdisk
+# Folders to keep
+!Assets/Vendors/InControl/Source/Debug/
