@@ -28,9 +28,16 @@ public class CloudSpawner : MonoBehaviour {
         controlX = 0f;
         SetMinAndMaxX();
         CreateClouds();
+        // create a reference to the player
+        player = GameObject.FindGameObjectWithTag("Player");
 	}
-	
-	void SetMinAndMaxX()
+
+    void Start()
+    {
+        PositionThePlayer();
+    }
+
+    void SetMinAndMaxX()
     {
 
         Vector3 bounds = Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 0));
@@ -99,6 +106,41 @@ public class CloudSpawner : MonoBehaviour {
 
             // create distance in the y axis between the spawned clouds
             posY -= distanceBetweenClouds;
+        }
+    }
+
+    void PositionThePlayer()
+    {
+        // Collecting the cloud and deadly cloud gameobjects in the scene
+        GameObject[] darkClouds = GameObject.FindGameObjectsWithTag("Deadly");
+        GameObject[] cloudsInGame = GameObject.FindGameObjectsWithTag("Cloud");
+
+        for(int i = 0; i < darkClouds.Length; i++)
+        {
+            // if a dark cloud is positioned first in the scene
+            if(darkClouds[i].transform.position.y == 0)
+            {
+                Vector3 tempPos = darkClouds[i].transform.position;
+                // repositioning the dark cloud to the first regular cloud position
+                darkClouds[i].transform.position = new Vector3(cloudsInGame[0].transform.position.x, cloudsInGame[0].transform.position.y, cloudsInGame[0].transform.position.z);
+                // sets the first cloud position to be where the dark cloud position was
+                cloudsInGame[0].transform.position = tempPos;
+            }
+
+            Vector3 tempPos1 = cloudsInGame[0].transform.position;
+
+            for(int cloudCount = 1; cloudCount < cloudsInGame.Length; cloudCount++)
+            {
+                // used to place player above the first cloud
+                if(tempPos1.y < cloudsInGame[cloudCount].transform.position.y)
+                {
+                    tempPos1 = cloudsInGame[cloudCount].transform.position;
+                }
+            }
+
+            tempPos1.y += 0.8f;
+            player.transform.position = tempPos1;
+
         }
     }
 }
