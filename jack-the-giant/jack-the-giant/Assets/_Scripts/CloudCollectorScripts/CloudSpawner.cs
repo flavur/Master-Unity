@@ -5,6 +5,7 @@ using UnityEngine;
 public class CloudSpawner : MonoBehaviour {
 
     [SerializeField] private GameObject[] clouds;
+    [SerializeField] private GameObject[] collectible;
 
     // Distance on the y axis between the clouds
     private float distanceBetweenClouds = 3f;
@@ -17,8 +18,6 @@ public class CloudSpawner : MonoBehaviour {
 
     // control the x position of the clouds to make the cloud position random
     private float controlX;
-
-    [SerializeField] private GameObject[] collectible;
 
     // used to position the player above the first cloud
     private GameObject player;
@@ -141,6 +140,66 @@ public class CloudSpawner : MonoBehaviour {
             tempPos1.y += 0.8f;
             player.transform.position = tempPos1;
 
+        }
+    }
+
+    void OnTriggerEnter2D(Collider2D target)
+    {
+        // checks to see if the tag of the collided object is a cloud or a deadly cloud
+        if(target.tag == "Cloud" || target.tag == "Deadly")
+        {
+            if(target.transform.position.y == lastCloudPosY)
+            {
+                Shuffle(clouds);
+                Shuffle(collectible);
+
+                Vector3 temp = target.transform.position;
+
+                // controls cloud re-spawning
+                for(int i = 0; i < clouds.Length; i++)
+                {
+                    // checks to see if previous cloud gameobjects are still active in the scene
+                    if (!clouds[i].activeInHierarchy)
+                    {
+                        // control the position of the cloud placement
+                        // places clouds in a zig zag format
+                        if (controlX == 0)
+                        {
+                            // randomize the x axis position
+                            temp.x = Random.Range(0.0f, maxX);
+                            controlX = 1f;
+                        }
+                        else if (controlX == 1)
+                        {
+                            // randomize the x axis position
+                            temp.x = Random.Range(0.0f, minX);
+                            controlX = 2f;
+                        }
+                        else if (controlX == 2)
+                        {
+                            // randomize the x axis position
+                            temp.x = Random.Range(1.0f, maxX);
+                            controlX = 3f;
+                        }
+                        else if (controlX == 3)
+                        {
+                            // randomize the x axis position
+                            temp.x = Random.Range(-1.0f, minX);
+                            controlX = 0f;
+                        }
+
+                        temp.y -= distanceBetweenClouds;
+
+                        // sets the new last cloud position
+                        lastCloudPosY = temp.y;
+
+                        // updates the position of the cloud
+                        clouds[i].transform.position = temp;
+                        // makes the cloud visible and active in the scene
+                        clouds[i].SetActive(true);
+                    }
+                }
+            }
         }
     }
 }
